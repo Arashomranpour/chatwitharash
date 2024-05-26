@@ -32,49 +32,50 @@ st.sidebar.header("Options")
 option = st.sidebar.selectbox("Choose an option", ["Ask a question", "Ask a question from an image"])
 
 if option == "Ask a question":
-    st.session_state.prompt = st.text_input("Ask your question:", value=st.session_state.prompt, key="prompt")
+    with st.form(key="ask_question_form"):
+        st.session_state.prompt = st.text_input("Ask your question:", value=st.session_state.prompt)
+        submit_question = st.form_submit_button(label="Submit")
 
-    # If there's a prompt, generate a response and update the chat history
-    if st.session_state.prompt and st.sidebar.button("Submit", key="submit_question"):
-        with st.chat_message("User"):
-            st.session_state.chat_history.append(("User", st.session_state.prompt))
-            st.write(st.session_state.prompt)
-        
-        # Generate a response from the model
-        res = model.generate_content(st.session_state.prompt)
-        
-        with st.chat_message("Gemini"):
-            st.write(res.text)
-            st.session_state.chat_history.append(("Gemini", res.text))
-        
-        # Clear the prompt
-        st.session_state.prompt = ""
-        
-        # Display the chat history
-        st.divider()
-        st.write("History :")
-        for sender, message in st.session_state.chat_history:
-            with st.chat_message(sender):
-                st.write(message)
-        
-        # Convert chat history to text
-        chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
-        
-        # Layout for download and clear buttons
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.download_button(
-                label="Download Chat History",
-                data=chat_history_text,
-                file_name="chat_history.txt",
-                mime="text/plain"
-            )
-        
-        with col2:
-            if st.button("Clear Chat History"):
-                clear_chat_history()
-                st.experimental_rerun()
+        if submit_question and st.session_state.prompt:
+            with st.chat_message("User"):
+                st.session_state.chat_history.append(("User", st.session_state.prompt))
+                st.write(st.session_state.prompt)
+            
+            # Generate a response from the model
+            res = model.generate_content(st.session_state.prompt)
+            
+            with st.chat_message("Gemini"):
+                st.write(res.text)
+                st.session_state.chat_history.append(("Gemini", res.text))
+            
+            # Clear the prompt
+            st.session_state.prompt = ""
+            
+            # Display the chat history
+            st.divider()
+            st.write("History :")
+            for sender, message in st.session_state.chat_history:
+                with st.chat_message(sender):
+                    st.write(message)
+            
+            # Convert chat history to text
+            chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
+            
+            # Layout for download and clear buttons
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.download_button(
+                    label="Download Chat History",
+                    data=chat_history_text,
+                    file_name="chat_history.txt",
+                    mime="text/plain"
+                )
+            
+            with col2:
+                if st.button("Clear Chat History"):
+                    clear_chat_history()
+                    st.experimental_rerun()
 
 elif option == "Ask a question from an image":
     input_prompt = st.text_input("Input prompt:", key="input")
