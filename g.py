@@ -51,13 +51,6 @@ if option == "Ask a question":
             # Clear the prompt
             st.session_state.prompt = ""
             
-            # Display the chat history
-            st.divider()
-            st.write("History :")
-            for sender, message in st.session_state.chat_history:
-                with st.chat_message(sender):
-                    st.write(message)
-            
             # Convert chat history to text
             chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
             
