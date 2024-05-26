@@ -99,7 +99,7 @@ def convert_chat_history_to_text(chat_history):
 # Function to clear chat history
 def clear_chat_history():
     st.session_state.chat_history = []
-
+    prompt=""
 # Display the header
 st.header("Chat with Arash")
 
