@@ -33,7 +33,7 @@ with tab_a:
     
     # Display the chat history
     st.divider()
-    st.write("History")
+    st.write("History :")
     for sender, message in st.session_state.chat_history:
         with st.chat_message(sender):
             st.write(message)
