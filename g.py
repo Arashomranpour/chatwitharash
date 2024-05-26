@@ -89,6 +89,10 @@ elif option == "Ask a question from an image":
         if upload_file is not None:
             image_data = Image.open(upload_file)
             model_vision = gen.GenerativeModel("gemini-pro-vision")
+            default_input_prompt = """
+            You are an expert in understanding invoices.
+            We will upload an image as an invoice, and you will have to answer any questions based on the uploaded invoice image.
+            """
             res = model_vision.generate_content([default_input_prompt, image_data, input_prompt])
             st.subheader("The Response:")
             st.write(res.text)
