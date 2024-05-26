@@ -12,9 +12,9 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Display the header
-st.header("Chat with Arash in En")
+st.header("Chat with Arash")
 tab_a,tab_b=st.tabs(["Ask","do you have any question from an Image?"])
-
+st.divider()
 # Get user input
 with tab_a:
     prompt = st.chat_input()
@@ -58,7 +58,7 @@ with tab_b:
         image = input_img(upload_file)
         st.image(image, use_column_width=True, caption="Uploaded Image")
     
-    submit = st.button("Tell me about the image")
+    submit = st.button("Submit")
     
     input_prompt = """
     you are an expert in understanding invoices.
