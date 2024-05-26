@@ -38,7 +38,7 @@ with tab_a:
             st.write(message)
 with tab_b:
 
-    model = genai.GenerativeModel("gemini-pro-vision")
+    model = gen.GenerativeModel("gemini-pro-vision")
 
     def get_res(myinput, img, prompt):
         response = model.generate_content([myinput, img, prompt])
