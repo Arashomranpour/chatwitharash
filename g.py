@@ -43,31 +43,31 @@ if option == "Ask a question":
         # Generate a response from the model
         res = model.generate_content(st.session_state.prompt)
         
-        with st.chat_message("Gemini"):
+        with st.chat_message("Arash"):
             st.write(res.text)
-            st.session_state.chat_history.append(("Gemini", res.text))
+            st.session_state.chat_history.append(("Arash", res.text))
         
         # Clear the prompt
         st.session_state.prompt = ""
         
-        # Convert chat history to text
-        chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
-        
-        # Layout for download and clear buttons
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.download_button(
-                label="Download Chat History",
-                data=chat_history_text,
-                file_name="chat_history.txt",
-                mime="text/plain"
-            )
-        
-        with col2:
-            if st.button("Clear Chat History"):
-                clear_chat_history()
-                st.experimental_rerun()
+    # Convert chat history to text
+    chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
+    
+    # Layout for download and clear buttons
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.download_button(
+            label="Download Chat History",
+            data=chat_history_text,
+            file_name="chat_history.txt",
+            mime="text/plain"
+        )
+    
+    with col2:
+        if st.button("Clear Chat History"):
+            clear_chat_history()
+            st.experimental_rerun()
 
 elif option == "Ask a question from an image":
     input_prompt = st.text_input("Input prompt:", key="input")
