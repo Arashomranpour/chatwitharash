@@ -14,10 +14,14 @@ if "prompt" not in st.session_state:
 
 # Function to convert chat history to text
 def convert_chat_history_to_text(chat_history):
-    history_text = ""
-    for sender, message in chat_history:
-        history_text += f"{sender}: {message}\n\n"
-    return history_text
+    try:
+        history_text = ""
+        for sender, message in chat_history:
+            history_text += f"{sender}: {message}\n\n"
+        return history_text
+    except Exception as e:
+        st.error(f"Error converting chat history to text: {e}")
+        return ""
 
 # Function to clear chat history and prompt
 def clear_chat_history():
@@ -58,12 +62,15 @@ if option == "Ask a question":
             col1, col2 = st.columns(2)
             
             with col1:
-                st.download_button(
-                    label="Download Chat History",
-                    data=chat_history_text,
-                    file_name="chat_history.txt",
-                    mime="text/plain"
-                )
+                try:
+                    st.download_button(
+                        label="Download Chat History",
+                        data=chat_history_text,
+                        file_name="chat_history.txt",
+                        mime="text/plain"
+                    )
+                except Exception as e:
+                    st.error(f"Error creating download button: {e}")
             
             with col2:
                 if st.button("Clear Chat History"):
@@ -89,8 +96,11 @@ elif option == "Ask a question from an image":
         if upload_file is not None:
             image_data = Image.open(upload_file)
             model_vision = gen.GenerativeModel("gemini-pro-vision")
-            res = model_vision.generate_content([default_input_prompt, image_data, input_prompt])
-            st.subheader("The Response:")
-            st.write(res.text)
+            try:
+                res = model_vision.generate_content([default_input_prompt, image_data, input_prompt])
+                st.subheader("The Response:")
+                st.write(res.text)
+            except Exception as e:
+                st.error(f"Error generating content from image: {e}")
         else:
             st.write("Please upload an image first.")
