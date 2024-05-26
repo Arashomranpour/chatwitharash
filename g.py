@@ -12,6 +12,7 @@ if "chat_history" not in st.session_state:
 
 # Display the header
 st.header("Chat with Arash")
+st.subheader("only in english")
 
 # Get user input
 prompt = st.chat_input()
