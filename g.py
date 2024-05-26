@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as gen
 from PIL import Image
+import pandas as pd
 
 # Configure the Google Generative AI API
 gen.configure(api_key="AIzaSyDaFygGK9ocbwn1JRNKrB5_4H59dXmd8Dg")
@@ -11,6 +12,8 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "prompt" not in st.session_state:
     st.session_state.prompt = ""
+if "admin_logged_in" not in st.session_state:
+    st.session_state.admin_logged_in = False
 
 # Function to convert chat history to text
 def convert_chat_history_to_text(chat_history):
@@ -29,7 +32,7 @@ st.header("Chat with Arash")
 
 # Sidebar for user inputs
 st.sidebar.header("Options")
-option = st.sidebar.selectbox("Choose an option", ["Ask a question", "Ask a question from an image"])
+option = st.sidebar.selectbox("Choose an option", ["Ask a question", "Ask a question from an image", "Admin Panel"])
 
 if option == "Ask a question":
     st.session_state.prompt = st.text_input("Ask your question:", value=st.session_state.prompt)
@@ -106,3 +109,30 @@ elif option == "Ask a question from an image":
                 st.error(f"Error generating response: {e}")
         else:
             st.write("Please upload an image first.")
+
+elif option == "Admin Panel":
+    if not st.session_state.admin_logged_in:
+        st.subheader("Admin Login")
+        password = st.text_input("Enter password:", type="password")
+        
+        if st.button("Login"):
+            if password == "7815":
+                st.session_state.admin_logged_in = True
+                st.experimental_rerun()
+            else:
+                st.error("Wrong password. Do not try to login if you are not admin.")
+    else:
+        st.subheader("Admin Panel")
+        
+        # Example: Load user data from a CSV file (replace with your data source)
+        user_data = pd.read_csv("user_data.csv")  # Replace with your data source
+        
+        st.write("User Questions:")
+        st.dataframe(user_data)
+
+        # Allow admin to view individual user's chat history
+        user_id = st.selectbox("Select User ID", user_data["user_id"].unique())
+        user_chat_history = user_data[user_data["user_id"] == user_id]["chat_history"]
+        
+        st.write(f"Chat History for User {user_id}:")
+        st.write(user_chat_history.values[0])
