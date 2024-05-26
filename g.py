@@ -32,10 +32,10 @@ st.sidebar.header("Options")
 option = st.sidebar.selectbox("Choose an option", ["Ask a question", "Ask a question from an image"])
 
 if option == "Ask a question":
-    st.session_state.prompt = st.text_input("Ask your question:", value=st.session_state.prompt)
+    st.session_state.prompt = st.text_input("Ask your question:", value=st.session_state.prompt, key="prompt")
 
     # If there's a prompt, generate a response and update the chat history
-    if st.session_state.prompt:
+    if st.session_state.prompt and st.sidebar.button("Submit", key="submit_question"):
         with st.chat_message("User"):
             st.session_state.chat_history.append(("User", st.session_state.prompt))
             st.write(st.session_state.prompt)
@@ -46,6 +46,9 @@ if option == "Ask a question":
         with st.chat_message("Gemini"):
             st.write(res.text)
             st.session_state.chat_history.append(("Gemini", res.text))
+        
+        # Clear the prompt
+        st.session_state.prompt = ""
         
         # Display the chat history
         st.divider()
@@ -81,7 +84,7 @@ elif option == "Ask a question from an image":
         image = Image.open(upload_file)
         st.image(image, use_column_width=True, caption="Uploaded Image")
     
-    submit = st.button("Submit")
+    submit = st.button("Submit", key="submit_image")
     
     default_input_prompt = """
     You are an expert in understanding invoices.
