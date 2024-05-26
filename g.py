@@ -14,7 +14,6 @@ if "chat_history" not in st.session_state:
 # Display the header
 st.header("Chat with Arash")
 tab_a,tab_b=st.tabs(["Ask","do you have any question from an Image?"])
-st.divider()
 # Get user input
 with tab_a:
     prompt = st.chat_input()
@@ -33,6 +32,8 @@ with tab_a:
             st.session_state.chat_history.append(("Gemini", res.text))
     
     # Display the chat history
+    st.divider()
+    st.write("History")
     for sender, message in st.session_state.chat_history:
         with st.chat_message(sender):
             st.write(message)
