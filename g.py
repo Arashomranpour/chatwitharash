@@ -122,6 +122,33 @@ if option == "Ask a question":
         with st.chat_message("Gemini"):
             st.write(res.text)
             st.session_state.chat_history.append(("Gemini", res.text))
+        
+        # Display the chat history
+        st.divider()
+        st.write("History :")
+        for sender, message in st.session_state.chat_history:
+            with st.chat_message(sender):
+                st.write(message)
+        
+        # Convert chat history to text
+        chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
+        
+        # Layout for download and clear buttons
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.download_button(
+                label="Download Chat History",
+                data=chat_history_text,
+                file_name="chat_history.txt",
+                mime="text/plain"
+            )
+        
+        with col2:
+            if st.button("Clear Chat History"):
+                clear_chat_history()
+                st.experimental_rerun()
+
 
 elif option == "Ask a question from an image":
     input_prompt = st.text_input("Input prompt:", key="input")
@@ -147,32 +174,7 @@ elif option == "Ask a question from an image":
             st.write(res.text)
         else:
             st.write("Please upload an image first.")
-
-# Display the chat history
-st.divider()
-st.write("History :")
-for sender, message in st.session_state.chat_history:
-    with st.chat_message(sender):
-        st.write(message)
-
-# Convert chat history to text
-chat_history_text = convert_chat_history_to_text(st.session_state.chat_history)
-
-# Layout for download and clear buttons
-col1, col2 = st.columns(2)
-
-with col1:
-    st.download_button(
-        label="Download Chat History",
-        data=chat_history_text,
-        file_name="chat_history.txt",
-        mime="text/plain"
-    )
-
-with col2:
-    if st.button("Clear Chat History"):
-        clear_chat_history()
-        st.experimental_rerun()  # Rerun the app to reflect changes
+  # Rerun the app to reflect changes
 
 
 #             st.write(res)
