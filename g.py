@@ -11,7 +11,7 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Display the header
-st.header("Chat with Gemini")
+st.header("Chat with Arash")
 
 # Get user input
 prompt = st.chat_input()
