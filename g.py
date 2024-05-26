@@ -41,11 +41,15 @@ if option == "Ask a question":
             st.write(st.session_state.prompt)
         
         # Generate a response from the model
-        res = model.generate_content(st.session_state.prompt)
-        
-        with st.chat_message("Arash"):
-            st.write(res.text)
-            st.session_state.chat_history.append(("Arash", res.text))
+        try:
+            res = model.generate_content(st.session_state.prompt)
+            response_text = res.text if hasattr(res, 'text') else "No response text available."
+            
+            with st.chat_message("Arash"):
+                st.write(response_text)
+                st.session_state.chat_history.append(("Arash", response_text))
+        except Exception as e:
+            st.error(f"Error generating response: {e}")
         
         # Clear the prompt
         st.session_state.prompt = ""
@@ -93,8 +97,12 @@ elif option == "Ask a question from an image":
             You are an expert in understanding invoices.
             We will upload an image as an invoice, and you will have to answer any questions based on the uploaded invoice image.
             """
-            res = model_vision.generate_content([default_input_prompt, image_data, input_prompt])
-            st.subheader("The Response:")
-            st.write(res.text)
+            try:
+                res = model_vision.generate_content([default_input_prompt, image_data, input_prompt])
+                response_text = res.text if hasattr(res, 'text') else "No response text available."
+                st.subheader("The Response:")
+                st.write(response_text)
+            except Exception as e:
+                st.error(f"Error generating response: {e}")
         else:
             st.write("Please upload an image first.")
