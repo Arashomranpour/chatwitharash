@@ -16,25 +16,26 @@ st.header("Chat with Arash in En")
 tab_a,tab_b=st.tabs(["Ask","do you have any question from an Image?"])
 
 # Get user input
-prompt = st.chat_input()
+with tab_a:
+    prompt = st.chat_input()
 
 # If there's a prompt, generate a response and update the chat history
-if prompt:
-    with st.chat_message("User"):
-        # st.write(prompt)
-        st.session_state.chat_history.append(("User", prompt))
+    if prompt:
+        with st.chat_message("User"):
+            # st.write(prompt)
+            st.session_state.chat_history.append(("User", prompt))
+        
+        # Generate a response from the model
+        res = model.generate_content(prompt)
+        
+        with st.chat_message("Gemini"):
+            st.write(res.text)
+            st.session_state.chat_history.append(("Gemini", res.text))
     
-    # Generate a response from the model
-    res = model.generate_content(prompt)
-    
-    with st.chat_message("Gemini"):
-        st.write(res.text)
-        st.session_state.chat_history.append(("Gemini", res.text))
-
-# Display the chat history
-for sender, message in st.session_state.chat_history:
-    with st.chat_message(sender):
-        st.write(message)
+    # Display the chat history
+    for sender, message in st.session_state.chat_history:
+        with st.chat_message(sender):
+            st.write(message)
 with tab_b:
 
     model = genai.GenerativeModel("gemini-pro-vision")
