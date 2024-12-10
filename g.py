@@ -3,7 +3,7 @@ import google.generativeai as gen
 from PIL import Image
 
 # Configure the Google Generative AI API
-gen.configure(api_key="AIzaSyDaFygGK9ocbwn1JRNKrB5_4H59dXmd8Dg")
+gen.configure(api_key="//")
 model = gen.GenerativeModel("gemini-pro")
 
 # Initialize the chat history and prompt in session_state
