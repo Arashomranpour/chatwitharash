@@ -34,7 +34,7 @@ cd chatwitharash
 pip install -r requirements.txt
 ```
 
-Open `g.py` and put your key in `gen.configure(api_key="...")` (or load it from an environment variable), then:
+Export your key as `GOOGLE_API_KEY`, then:
 
 ```bash
 streamlit run g.py
