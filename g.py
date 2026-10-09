@@ -1,9 +1,10 @@
+import os
 import streamlit as st
 import google.generativeai as gen
 from PIL import Image
 
 # Configure the Google Generative AI API
-gen.configure(api_key="//")
+gen.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = gen.GenerativeModel("gemini-pro")
 
 # Initialize the chat history and prompt in session_state
